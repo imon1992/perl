@@ -1,7 +1,6 @@
 #!/usr/bin/perl
 
 use strict;
-use lib('libs');
 use Data::Dumper;
 
 print Dumper(\@INC);
