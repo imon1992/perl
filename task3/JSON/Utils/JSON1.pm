@@ -16,23 +16,19 @@ sub readFile
 {
      my ($self,$fileName) = @_;
      my @data = ();
-     my $a;
+     
      open my $fh,"< $fileName";
      binmode($fh);
-     while(<$fh>)
-     {
-	     $a .= $_;
-         chomp($_);
-         # push @data,$_;
-     }
-     close $fh;
-     # return join("\n",@data) unless(wantarray);
-
-     return $a;
+     
+     local $/;
+     my $fileContent = <$fh>;
+     
+     return $fileContent;
 }
 
-sub _decodeJSON {
-	my ($JSONText) = @_;
+sub _decodeJSON 
+{
+    my ($JSONText) = @_;
     my $hashRef = decode_json($JSONText);
     return @$hashRef;
 }
@@ -40,14 +36,18 @@ sub _decodeJSON {
 sub makeHash
 {
      my ($self,$jsonFile) = @_;
-     # my$c = $self->readFile($jsonFile);
-     my @json = decode_json($self->readFile('$jsonFile'));
-     print Dumper(@json);
-     # print Dumper($c);
-     # my $simple = XML::Simple->new();
-     # my $data   =  $simple->XMLin('myXML.xml');
+     my $jsonFile = $self->readFile($jsonFile);
+     my $json = decode_json($jsonFile);
+     my %lengs = ();
      
-     #return $data;
+     foreach my $k (keys $json)
+     {
+          $lengs{$k} = $json->{$k};
+          print Dumper($json->{$k})
+     }
+     
+     return \%lengs;
+   
  }
 
 1;
